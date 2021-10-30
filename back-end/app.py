@@ -97,6 +97,12 @@ def add_candy():
     print(resp_json)
     return jsonify(resp_json)
 
+@app.route('/delete/candy', methods=['GET'])
+def delete_candy():
+    index_to_be_deleted = request.args.get('index')
+    resp_json.pop(index_to_be_deleted)
+    return "1"
+
 
 
 if __name__ == '__main__':
