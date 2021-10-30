@@ -10,7 +10,32 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-
+resp_json = [
+        {
+            "name": "blue candy",
+            "flavour": "sweet",
+            "givenby": [
+                "gagan1@gagan1.com",
+            ],
+            "thanked": "no",
+        }, 
+        {
+            "name": "blue candy 2",
+            "flavour": "spicy",
+            "givenby": [
+                "gagan2@gagan2.com"
+            ],
+            "thanked": "no",
+        },
+        {
+            "name": "pink candy",
+            "flavour": "sour",
+            "givenby": [
+                "gag@ga.com",
+                "abcd@abcd.com"
+            ]
+        }
+    ]
 
 
 class Email:
@@ -47,32 +72,30 @@ def verify_email():
 def fetch_data():
     email = request.args.get('email')
     # returning temporary response for now
-    return jsonify([
-        {
-            "name": "blue candy",
-            "flavour": "sweet",
-            "givenby": [
-                "gagan1@gagan1.com",
-            ],
-            "thanked": "no",
-        }, 
-        {
-            "name": "blue candy 2",
-            "flavour": "spicy",
-            "givenby": [
-                "gagan2@gagan2.com"
-            ],
-            "thanked": "no",
-        },
-        {
-            "name": "pink candy",
-            "flavour": "sour",
-            "givenby": [
-                "gag@ga.com",
-                "abcd@abcd.com"
-            ]
-        }
-    ])
+    return jsonify(resp_json)
+
+
+@app.route('/add/candy', methods=['GET'])
+def add_candy():
+    # "name": "blue candy",
+    #         "flavour": "sweet",
+    #         "givenby": [
+    #             "gagan1@gagan1.com",
+    #         ],
+    #         "thanked": "no",
+    name = request.args.get("name")
+    flavour = request.args.get("flavour")
+    givenby = request.args.get("given")
+    thanked = request.args.get("thanked")
+    resp_json.append({
+        "name": name,
+        "flavour": flavour,
+        "givenby": [givenby],
+        "thanked": "no",
+    })
+    print("resp json -> ", resp_json)
+    print(resp_json)
+    return jsonify(resp_json)
 
 
 
