@@ -15,5 +15,5 @@ message = client.messages \
                      from_='+15017122661',
                      to='+15558675310'
                  )
-
+#print json response
 print(message.sid)
