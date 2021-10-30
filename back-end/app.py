@@ -8,33 +8,33 @@ import random
 import json
 
 # importing important classes
-from classes import Email 
-
+import Email 
+import Users
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-resp_json = [
-        {
-            "name": "blue candy",
-            "flavour": "sweet",
-            "givenby": "gagan1",
+# resp_json = [
+#         {
+#             "name": "blue candy",
+#             "flavour": "sweet",
+#             "givenby": "gagan1",
 
-        }, 
-        {
-            "name": "blue candy 2",
-            "flavour": "spicy",
-            "givenby": "gagan2"
+#         }, 
+#         {
+#             "name": "blue candy 2",
+#             "flavour": "spicy",
+#             "givenby": "gagan2"
 
-        },
-        {
-            "name": "pink candy",
-            "flavour": "sour",
-            "givenby": "gag",
+#         },
+#         {
+#             "name": "pink candy",
+#             "flavour": "sour",
+#             "givenby": "gag",
 
-        }
-    ]
+#         }
+#     ]
 
 
 
@@ -58,9 +58,15 @@ def verify_email():
 @app.route('/getdata', methods=['GET'])
 @cross_origin()
 def fetch_data():
+    print("request in getdata")
     email = request.args.get('email')
     # returning temporary response for now
-    return jsonify(resp_json)
+    user_obj_temp = Users.User(email)
+    user_list = user_obj_temp.fetch_user_data()
+    if user_list == -1:
+        return json.dumps("Error")
+    else:
+        return jsonify(user_list)
 
 
 @app.route('/add/candy', methods=['GET'])
@@ -71,23 +77,34 @@ def add_candy():
     #             "gagan1@gagan1.com",
     #         ],
     #         "thanked": "no",
+    email = request.args.get("email")
+    print("email recieved in add candy -> ", email)
     name = request.args.get("name")
-    flavour = request.args.get("flavour")
+    # flavour = request.args.get("flavour")
     givenby = request.args.get("given")
-    resp_json.append({
-        "name": name,
-        "flavour": flavour,
-        "givenby": [givenby],
-    })
+    print("name -> ", name)
+    print("givenby -> ", givenby)
+    # resp_json.append({
+    #     "name": name,
+    #     "flavour": flavour,
+    #     "givenby": [givenby],
+    # })
+    temp_obj1 = Users.User(email)
+    inp_resp = temp_obj1.insert_user_data(name, givenby)
+    if inp_resp == 1:
+        print("Insert success")
+        return "1"
     print("resp json -> ", resp_json)
     print(resp_json)
     return jsonify(resp_json)
 
-@app.route('/delete/candy', methods=['GET'])
-def delete_candy():
-    index_to_be_deleted = request.args.get('index')
-    resp_json.pop(index_to_be_deleted)
-    return "1"
+
+
+# @app.route('/delete/candy', methods=['GET'])
+# def delete_candy():
+#     index_to_be_deleted = request.args.get('index')
+#     resp_json.pop(index_to_be_deleted)
+#     return "1"
 
 
 
