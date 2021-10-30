@@ -1,9 +1,14 @@
+# Main API file
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 # random required for generating the OTP
 import random
 import json
+
+# importing important classes
+from classes import Email 
 
 
 app = Flask(__name__)
@@ -14,41 +19,23 @@ resp_json = [
         {
             "name": "blue candy",
             "flavour": "sweet",
-            "givenby": [
-                "gagan1@gagan1.com",
-            ],
-            "thanked": "no",
+            "givenby": "gagan1",
+
         }, 
         {
             "name": "blue candy 2",
             "flavour": "spicy",
-            "givenby": [
-                "gagan2@gagan2.com"
-            ],
-            "thanked": "no",
+            "givenby": "gagan2"
+
         },
         {
             "name": "pink candy",
             "flavour": "sour",
-            "givenby": [
-                "gag@ga.com",
-                "abcd@abcd.com"
-            ]
+            "givenby": "gag",
+
         }
     ]
 
-
-class Email:
-    def __init__(self, email):
-        self.email = email
-    def generate_otp(self):
-        self.otp = random.randint(111111, 999999)
-        self.email_otp()
-        # 123456 is just a temp OTP I am returning
-        return str(123456)
-    def email_otp(self):
-        # Implement Twilio Code to send OTP here
-        pass
 
 
 
@@ -60,10 +47,11 @@ class Email:
 @cross_origin()
 def verify_email():
     email = request.args.get('email')
-    otp_obj = Email(email)
+    otp_obj = Email.Email(email)
     otp_to_be_sent = otp_obj.generate_otp()
     del otp_obj
-    return otp_to_be_sent
+    # return otp_to_be_sent
+    return str(123456)
 
 
 # Routes to deal with data will be added here
@@ -86,12 +74,10 @@ def add_candy():
     name = request.args.get("name")
     flavour = request.args.get("flavour")
     givenby = request.args.get("given")
-    thanked = request.args.get("thanked")
     resp_json.append({
         "name": name,
         "flavour": flavour,
         "givenby": [givenby],
-        "thanked": "no",
     })
     print("resp json -> ", resp_json)
     print(resp_json)
