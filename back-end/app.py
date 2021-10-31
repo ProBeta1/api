@@ -47,8 +47,10 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @cross_origin()
 def verify_email():
     email = request.args.get('email')
+    print("email - > ", email)
     otp_obj = Email.Email(email)
     otp_to_be_sent = otp_obj.generate_otp()
+    print("otp to be sent -> ", otp_to_be_sent)
     del otp_obj
     # return otp_to_be_sent
     return str(otp_to_be_sent)

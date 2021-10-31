@@ -35,6 +35,7 @@ class TwilioSend:
         try:
             sg=SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
             response=sg.send(message)
+            print("client -> ", os.environ.get('SENDGRID_API_KEY'))
             print(response.status_code)
             print(response.body)
             # print(response.header)
