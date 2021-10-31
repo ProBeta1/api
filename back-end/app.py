@@ -51,7 +51,7 @@ def verify_email():
     otp_to_be_sent = otp_obj.generate_otp()
     del otp_obj
     # return otp_to_be_sent
-    return str(123456)
+    return str(otp_to_be_sent)
 
 
 # Routes to deal with data will be added here
@@ -64,7 +64,7 @@ def fetch_data():
     user_obj_temp = Users.User(email)
     user_list = user_obj_temp.fetch_user_data()
     if user_list == -1:
-        return json.dumps("Error")
+        return json.dumps([{"givenby": "Add first Candy Name", "name": "Add who gave this candy"}])
     else:
         return jsonify(user_list)
 
@@ -107,6 +107,11 @@ def add_candy():
 #     return "1"
 
 
+
+@app.route("/test")
+def test_route():
+    print("Test route reached")
+    return "Test route"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
