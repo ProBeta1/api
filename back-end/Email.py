@@ -44,11 +44,6 @@ class TwilioSend:
             return -1
 
 
-
-
-
-
-
 # function email_otp will contain the code to email the OTP
 class Email:
     def __init__(self, email):
@@ -68,6 +63,15 @@ class Email:
         opt_send_resp = otp_send_obj.send_message(self.otp)
         # otp sent successfully
         if opt_send_resp == 1:
+            return 1
+        else:
+            return -1
+    # recemail is email of receipient
+    def email_message(self, recemail, mesage):
+        twilio_obj5 = TwilioSend(recemail)
+        message_resp = twilio_obj5.send_message(mesage)
+        # success
+        if message_resp == 1:
             return 1
         else:
             return -1

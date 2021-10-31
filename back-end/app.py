@@ -106,12 +106,28 @@ def add_candy():
 #     resp_json.pop(index_to_be_deleted)
 #     return "1"
 
+@app.route('/send/email', methods=['GET'])
+def send_email():
+    print("Inside send email")
+    recemail = request.args.get('recemail')
+    message = request.args.get('message')
+    if (len(recemail) == 0) or (len(message) == 0):
+        print("but body empty")
+        return "-1"  
+    email_obj1 = Email.Email(recemail)
+    message_status = email_obj1.email_message(recemail, message)
+    if message_status == 1:
+        return "1"
+    else:
+        return "-1"
 
 
 @app.route("/test")
 def test_route():
     print("Test route reached")
     return "Test route"
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
